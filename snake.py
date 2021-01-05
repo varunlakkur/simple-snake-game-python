@@ -9,6 +9,8 @@ curses.noecho() #turn off automatic echoing of keys to the screen
 curses.curs_set(0)
 window.nodelay(True) #makes it possible to not wait for the user input
 
+reverse = {KEY_UP: KEY_DOWN, KEY_DOWN: KEY_UP, KEY_LEFT: KEY_RIGHT, KEY_RIGHT: KEY_LEFT}
+
 #initiate values
 key = KEY_RIGHT
 score = 0
@@ -29,7 +31,7 @@ while key != 27: # While they Esc key is not pressed
     window.timeout(140 - (len(snake)/5 + len(snake)/10)%120) 
     
     event = window.getch() #refreshes the screen and then waits for the user to hit a key
-    key = key if event == -1 else event 
+    key = key if event == -1 or event == reverse[key] else event
 
     # Calculates the new coordinates of the head of the snake.
     snake.insert(0, [snake[0][0] + (key == KEY_DOWN and 1) + (key == KEY_UP and -1), snake[0][1] + (key == KEY_LEFT and -1) + (key == KEY_RIGHT and 1)])
